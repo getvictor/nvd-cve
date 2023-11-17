@@ -13,6 +13,11 @@ jobs:
   security_artifacts:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout NVD repo
+        uses: actions/checkout@v4
+        with:
+          ref: release
+          
       - name: Checkout Fleet
         uses: actions/checkout@v4
         with:
