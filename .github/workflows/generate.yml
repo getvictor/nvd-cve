@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Fleet
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           repository: fleetdm/fleet
           fetch-depth: 1
@@ -23,9 +23,9 @@ jobs:
           path: fleet
 
       - name: Setup Go
-        uses: actions/setup-go@v2
+        uses: actions/setup-go@v4
         with:
-          go-version: '^1.17.3'
+          go-version: '^1.21.4'
 
       - name: Generate security artifacts
         uses: nick-fields/retry@943e742917ac94714d2f408a0e8320f2d1fcafcd # v2.8.3
