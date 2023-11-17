@@ -1,0 +1,62 @@
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch: # Manual
+
+permissions:
+  contents: write
+
+jobs:
+  security_artifacts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Fleet
+        uses: actions/checkout@v2
+        with:
+          repository: fleetdm/fleet
+          fetch-depth: 1
+          ref: 14888-nvd-cve-sync-conversion
+          token: ${{ github.token }}
+          path: fleet
+
+      - name: Setup Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '^1.17.3'
+
+      - name: Generate security artifacts
+        uses: nick-fields/retry@943e742917ac94714d2f408a0e8320f2d1fcafcd # v2.8.3
+        with:
+          timeout_minutes: 180
+          max_attempts: 3
+          retry_wait_seconds: 120
+          command: |
+            cd fleet
+            go mod download
+            go run -tags fts5 cmd/cve/generate.go --db_dir ./vulndb
+
+      - name: Current date
+        id: date
+        run: |
+          echo "::set-output name=date::$(date +'%Y%m%d%H%M')"
+
+      # Note that a new commit must be made for each release, otherwise GitHub does not order
+      # the releases properly.
+      - name: Tag
+        run: |
+          git config --global user.email ""
+          git config --global user.name "GitHub Actions Bot"
+          git commit --allow-empty -m 'Release ${{ steps.date.outputs.date }}'
+          git push origin release
+
+      - name: Release
+        uses: softprops/action-gh-release@1e07f4398721186383de40550babbdf2b84acfc5 # v0.1.14
+        with:
+          files: |
+            fleet/vulndb/*
+          tag_name: ${{ steps.date.outputs.date }}
+          target_commitish: release
+          token: ${{ secrets.GITHUB_TOKEN }}
