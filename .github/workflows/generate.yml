@@ -28,14 +28,15 @@ jobs:
           path: fleet
 
       - name: Setup Go
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v4.1.0
         with:
+          cache: false
           go-version: '^1.21.4'
 
       - name: Generate security artifacts
         uses: nick-fields/retry@943e742917ac94714d2f408a0e8320f2d1fcafcd # v2.8.3
         with:
-          timeout_minutes: 180
+          timeout_minutes: 90
           max_attempts: 3
           retry_wait_seconds: 120
           command: |
@@ -46,7 +47,7 @@ jobs:
       - name: Current date
         id: date
         run: |
-          echo "::set-output name=date::$(date +'%Y%m%d%H%M')"
+          echo "name=date::$(date +'%Y%m%d%H%M')" >> $GITHUB_OUTPUT
 
       # Note that a new commit must be made for each release, otherwise GitHub does not order
       # the releases properly.
@@ -65,3 +66,10 @@ jobs:
           tag_name: ${{ steps.date.outputs.date }}
           target_commitish: release
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Delete Old Releases
+        uses: dev-drprasad/delete-older-releases@v0.3.2
+        with:
+          keep_latest: 60
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
