@@ -23,7 +23,7 @@ jobs:
         with:
           repository: fleetdm/fleet
           fetch-depth: 1
-          ref: 14888-nvd-cve-sync-conversion
+          ref: main
           token: ${{ github.token }}
           path: fleet
 
