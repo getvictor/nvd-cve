@@ -55,6 +55,7 @@ jobs:
         run: |
           git config --global user.email ""
           git config --global user.name "GitHub Actions Bot"
+          git pull
           git commit --allow-empty -m 'Release ${{ steps.date.outputs.date }}'
           git push origin release
 
