@@ -14,6 +14,10 @@ Unsure? If you run into any trouble or questions, click [here](https://fleetdm.c
 
 If you suspect you've found a bug, please [report the bug here](https://github.com/fleetdm/fleet/issues). Thanks!
 
+### Debug
+
+You can check if downloads are happening with GitHub API. Look for download_count at endpoint like: https://api.github.com/repos/getvictor/nvd-cve/releases
+
 ## License
 
 This repo is free and open-source under the MIT License.
