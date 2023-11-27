@@ -1,4 +1,4 @@
-# nvd
+# nvd-cve
 
 This repo contains the regular release of [Fleet](https://fleetdm.com)'s CVE vulnerability database. The database is compiled regulardly from the [National Vulnerability Database](https://nvd.nist.gov/).
 
