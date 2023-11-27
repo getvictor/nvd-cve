@@ -2,7 +2,12 @@
 
 This repo contains the regular release of [Fleet](https://fleetdm.com)'s CVE vulnerability database. The database is compiled regulardly from the [National Vulnerability Database](https://nvd.nist.gov/).
 
-#### Documentation
+### Documentation
+
+To use this repo as a source of NVD CVE data for your Fleet server, set the following environment variable:
+```
+FLEET_VULNERABILITIES_CVE_FEED_PREFIX_URL=https://github.com/getvictor/nvd-cve/releases/latest/download
+```
 
 Complete documentation for Fleet can be found at [https://fleetdm.com/docs](https://fleetdm.com/docs).
 
